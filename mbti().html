@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超簡易MBTI風診断</title>
+<style>
+body {
+  font-family: "Helvetica Neue", sans-serif;
+  background: linear-gradient(to bottom right, #ffd6e7, #ffeef5);
+  text-align: center;
+  padding: 30px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+h2 { margin-bottom: 20px; }
+
+button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 15px;
+  border: none;
+  background: #ff8fb1;
+  color: white;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #ff6f9f;
+}
+
+.result {
+  font-size: 22px;
+  margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+<h2 id="question"></h2>
+<div id="choices"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    text: "Q1. 休日の過ごし方は？",
+    options: [
+      { text: "みんなでワイワイ", type: "E" },
+      { text: "ひとり時間が最高", type: "I" }
+    ]
+  },
+  {
+    text: "Q2. 物事を見るときは？",
+    options: [
+      { text: "現実重視", type: "S" },
+      { text: "ひらめき重視", type: "N" }
+    ]
+  },
+  {
+    text: "Q3. 判断基準は？",
+    options: [
+      { text: "論理的に考える", type: "T" },
+      { text: "気持ちを大事にする", type: "F" }
+    ]
+  },
+  {
+    text: "Q4. 予定は？",
+    options: [
+      { text: "きっちり決めたい", type: "J" },
+      { text: "その時のノリ", type: "P" }
+    ]
+  }
+];
+
+let current = 0;
+let resultType = "";
+
+function showQuestion() {
+  if (current >= questions.length) {
+    showResult();
+    return;
+  }
+
+  document.getElementById("question").innerText = questions[current].text;
+  const choicesDiv = document.getElementById("choices");
+  choicesDiv.innerHTML = "";
+
+  questions[current].options.forEach(option => {
+    const btn = document.createElement("button");
+    btn.innerText = option.text;
+    btn.onclick = () => {
+      resultType += option.type;
+      current++;
+      showQuestion();
+    };
+    choicesDiv.appendChild(btn);
+  });
+}
+
+function showResult() {
+  document.querySelector(".card").innerHTML = `
+    <h2>あなたのタイプは…</h2>
+    <div class="result">${resultType} タイプ♡</div>
+    <p>※超簡易MBTI風診断です</p>
+  `;
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
